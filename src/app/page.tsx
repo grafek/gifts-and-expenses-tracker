@@ -1,3 +1,12 @@
-export default function Home() {
-  return <main className="h-screen bg-black p-2 py-20"></main>;
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
+export default function Page() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/expenses");
+  }, [router]);
 }
