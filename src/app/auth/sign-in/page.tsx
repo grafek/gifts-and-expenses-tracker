@@ -25,10 +25,10 @@ export default function Page() {
       const error = await signIn(email, password);
       if (error) {
         setError(error.toString());
+        setLoading(false);
+        return;
       }
-      console.log(error);
       router.push("/expenses");
-      setLoading(false);
     },
     [email, password, router]
   );
