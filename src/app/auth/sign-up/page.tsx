@@ -20,15 +20,15 @@ export default function Page() {
 
   const submitHandler = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
+      setLoading(true);
       event.preventDefault();
 
-      setLoading(true);
       const error = await signUp(name, email, password);
       if (error) {
-        console.log(error);
         setError(error.toString());
+        setLoading(false);
+        return;
       }
-      setLoading(false);
       router.push("/expenses");
     },
     [email, name, password, router]
