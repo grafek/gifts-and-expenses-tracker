@@ -1,4 +1,4 @@
-# My Expenses 🖩
+# gifts-and-expenses-tracker 🖩
 
 Testing out the newest RSCs and App directory with Next 13!
 
