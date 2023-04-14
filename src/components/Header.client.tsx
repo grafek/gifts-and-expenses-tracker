@@ -30,7 +30,7 @@ function Header() {
           {NAV_ITEMS.map((item, i) => (
             <li key={`${item.text} - ${i}`}>
               <Link
-                className={` px-2 transition-colors duration-200 hover:text-gray-200`}
+                className={`px-2 transition-colors duration-200 hover:text-gray-200`}
                 href={item.href}
                 shallow
               >

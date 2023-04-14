@@ -16,14 +16,12 @@ export type Expense = {
     | "November"
     | "December"
     | string;
-  year: number;
+  year: string;
   userId?: string;
 };
 
 export type User = {
   displayName: string | null;
   email: string;
-  emailVerified: boolean;
-  isAnonymous: boolean;
   providerId: string;
 };
