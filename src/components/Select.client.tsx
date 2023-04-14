@@ -25,7 +25,7 @@ const Select = ({
       </label>
       <select
         id={name}
-        className={`${className} w-full rounded-md bg-transparent p-3 outline outline-1 outline-gray-700 focus:outline-gray-400`}
+        className={`${className} w-full rounded-md bg-transparent p-2 outline outline-1 outline-gray-700 focus:outline-gray-400 sm:p-3`}
         {...props}
       >
         {options?.map((option) => (
