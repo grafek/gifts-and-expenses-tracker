@@ -243,10 +243,10 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onHandleAdd }) => {
       <Button
         type="submit"
         disabled={loading ? true : false}
-        className="btn-primary flex items-center w-fit mx-auto gap-3 mt-2"
+        className="btn-primary mx-auto mt-2 flex w-fit items-center gap-3"
       >
         <span className="flex-1">Submit</span>
-        {/* {loading ? <Spinner /> : null} */}
+        {loading ? <Spinner /> : null}
       </Button>
       {error && (
         <p className="text-red-600" role="alert">
