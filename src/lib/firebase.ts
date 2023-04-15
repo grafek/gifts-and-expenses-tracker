@@ -3,7 +3,15 @@ import {
   type FirebaseOptions,
   FirebaseError,
 } from "firebase/app";
-import { getDatabase, onValue, push, ref, set } from "firebase/database";
+import {
+  get,
+  getDatabase,
+  onValue,
+  push,
+  ref,
+  set,
+  update,
+} from "firebase/database";
 import {
   browserSessionPersistence,
   createUserWithEmailAndPassword,
@@ -116,16 +124,15 @@ export async function signOut() {
 
 export const getExpenses = async (uid: string) => {
   return new Promise<Expense[]>((resolve, reject) => {
-    const database = getDatabase();
-    const expensesRef = ref(database, `expenses/${uid}`);
+    const expensesRef = ref(db, `expenses/${uid}`);
 
     onValue(
       expensesRef,
       (snapshot) => {
-        const expenses: Expense[] = [];
+        let expenses: Expense[] = [];
         snapshot.forEach((childSnapshot) => {
           const expense = childSnapshot.val();
-          expenses.push(expense);
+          expenses = [...expenses, expense];
         });
         resolve(expenses);
       },
@@ -137,11 +144,34 @@ export const getExpenses = async (uid: string) => {
 };
 
 export const addExpense = async (uid: string, expense: Expense) => {
-  let error = null;
+  let error: string | null = null;
   try {
-    const expenseRef = push(ref(db, `expenses/${uid}`));
-    const id = push(expenseRef).key;
-    await set(expenseRef, { ...expense, id });
+    const expensesRef = ref(db, `expenses/${uid}`);
+    const snapshot = await get(expensesRef);
+    let existingExpense: Expense | null = null;
+
+    snapshot.forEach((childSnapshot) => {
+      const expenseId = childSnapshot.key;
+      const expenseData = childSnapshot.val();
+      if (
+        expenseData.name === expense.name &&
+        expenseData.year === expense.year &&
+        expenseData.month === expense.month
+      ) {
+        existingExpense = { id: expenseId, ...expenseData };
+      }
+    });
+
+    if (existingExpense && existingExpense != null) {
+      // @ts-expect-error
+      existingExpense.value += expense.value;
+      const expenseRef = ref(db, `expenses/${uid}/${existingExpense["id"]}`);
+      await update(expenseRef, existingExpense);
+    } else {
+      const newExpenseRef = push(expensesRef);
+      const id = newExpenseRef.key;
+      await set(newExpenseRef, { ...expense, id });
+    }
   } catch (e) {
     if (e instanceof FirebaseError) {
       error = e.message;

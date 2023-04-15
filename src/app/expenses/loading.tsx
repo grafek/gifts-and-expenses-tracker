@@ -2,7 +2,7 @@ import { ChartSkeleton } from "@/components/Loaders.server";
 
 function Loading() {
   return (
-    <div className="grid min-h-[calc(100vh-218px)] place-items-center">
+    <div className="center">
       <ChartSkeleton />
     </div>
   );

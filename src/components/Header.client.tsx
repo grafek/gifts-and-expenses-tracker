@@ -25,7 +25,7 @@ function Header() {
     >
       <nav className="flex items-center justify-between px-6 py-4">
         {/* ADD LOGO */}
-        <Link href="/">Logo</Link>
+        <Link href="/" />
         <ul className="flex gap-3 sm:gap-5 md:gap-8">
           {NAV_ITEMS.map((item, i) => (
             <li key={`${item.text} - ${i}`}>

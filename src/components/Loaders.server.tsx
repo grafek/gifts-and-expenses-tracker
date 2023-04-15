@@ -15,7 +15,7 @@ export const Spinner = () => {
 
 export const LoadingPage = () => {
   return (
-    <div className="grid min-h-[calc(100vh-218px)] place-items-center">
+    <div className="grid center place-items-center">
       <div
         role="status"
         className="relative inline-block h-12 w-12 [&>div]:absolute [&>div]:box-border [&>div]:block [&>div]:h-12 [&>div]:w-12 [&>div]:rounded-full [&>div]:border-[6px] [&>div]:border-transparent [&>div]:border-t-blue-600"

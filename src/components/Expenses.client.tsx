@@ -59,7 +59,7 @@ const ExpensesChart: React.FC = () => {
     0
   );
 
-  const CHART_HEIGHT = 567;
+  const CHART_HEIGHT = 510;
   const BAR_WIDTH = 40;
 
   return (
@@ -69,7 +69,7 @@ const ExpensesChart: React.FC = () => {
         <Button
           type="submit"
           onClick={() => setShowForm((prev) => !prev)}
-          className="bg-transparent px-4 py-2 text-lg outline outline-1 outline-gray-700 hover:bg-gray-300 hover:text-black"
+          className="btn-transparent"
         >
           Add Expense
         </Button>
@@ -95,7 +95,7 @@ const ExpensesChart: React.FC = () => {
         </div>
         <div className="overflow-x-auto">
           <svg
-            className={`min-w-full`}
+            className={`min-w-full select-none`}
             width={`${expenses.length * 60 + 10}`}
             height={CHART_HEIGHT}
           >
@@ -137,7 +137,7 @@ const ExpensesChart: React.FC = () => {
               <text
                 key={data.id}
                 x={index * 60 + BAR_WIDTH}
-                y={CHART_HEIGHT - 4}
+                y={CHART_HEIGHT - 6}
                 className={`fill-[#f5f5f5] text-[12px] font-semibold tracking-wider`}
                 textAnchor="middle"
               >
@@ -243,9 +243,9 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onHandleAdd }) => {
       <Button
         type="submit"
         disabled={loading ? true : false}
-        className="relative flex w-full items-center justify-center px-4 py-2 text-lg outline outline-1 outline-gray-700 transition-colors duration-300 hover:bg-white/90 hover:text-black"
+        className="btn-primary mx-auto mt-2 flex w-fit items-center gap-3"
       >
-        <span className="flex-1"> Add expense</span>
+        <span className="flex-1">Submit</span>
         {loading ? <Spinner /> : null}
       </Button>
       {error && (
