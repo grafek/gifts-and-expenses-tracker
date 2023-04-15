@@ -36,3 +36,15 @@ select:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
   color: white;
 }
+
+.center {
+  @apply grid min-h-[calc(100vh-218px)] place-items-center;
+}
+
+.btn-transparent {
+  @apply bg-transparent px-3 py-1 text-lg outline outline-1 outline-gray-700 hover:bg-gray-300 hover:text-black md:px-4 md:py-2;
+}
+
+.btn-primary {
+  @apply bg-gray-300 px-3 py-1 text-lg text-black outline outline-1 outline-gray-700 transition-colors duration-300 hover:bg-transparent hover:text-inherit md:px-4 md:py-2;
+}
