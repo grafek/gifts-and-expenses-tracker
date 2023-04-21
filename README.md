@@ -13,7 +13,7 @@ A simple app to track your expenses and gifts from your friends
 
 
 ## 🔥 Features
-- [x] add and list expenses on the chart
+- [x] CRUD expenses on the chart or list for editing/removing
 - [x] basic form validation & user feedback
 - [x] auth and protected routes
 
