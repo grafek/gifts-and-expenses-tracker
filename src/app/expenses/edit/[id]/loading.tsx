@@ -1,5 +1,9 @@
 import { FormSkeleton } from "@/components/Loaders.server";
 
 export default function Loading() {
-  return <FormSkeleton />;
+  return (
+    <section className="center">
+      <FormSkeleton />
+    </section>
+  );
 }

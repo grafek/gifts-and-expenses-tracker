@@ -9,6 +9,7 @@ import {
   onValue,
   push,
   ref,
+  remove,
   set,
   update,
 } from "firebase/database";
@@ -148,7 +149,7 @@ export const addExpense = async (uid: string, expense: Expense) => {
   try {
     const expensesRef = ref(db, `expenses/${uid}`);
     const snapshot = await get(expensesRef);
-    let existingExpense: Expense | null = null;
+    let existingExpense: Partial<Expense> = {};
 
     snapshot.forEach((childSnapshot) => {
       const expenseId = childSnapshot.key;
@@ -162,8 +163,7 @@ export const addExpense = async (uid: string, expense: Expense) => {
       }
     });
 
-    if (existingExpense && existingExpense != null) {
-      // @ts-expect-error
+    if (existingExpense && existingExpense.value) {
       existingExpense.value += expense.value;
       const expenseRef = ref(db, `expenses/${uid}/${existingExpense["id"]}`);
       await update(expenseRef, existingExpense);
@@ -178,4 +178,72 @@ export const addExpense = async (uid: string, expense: Expense) => {
     }
   }
   return error;
+};
+
+export const updateExpense = async (uid: string, expense: Expense) => {
+  let error: string | null = null;
+  try {
+    const expensesRef = ref(db, `expenses/${uid}`);
+    const snapshot = await get(expensesRef);
+    let existingExpense: Partial<Expense> = {};
+
+    snapshot.forEach((childSnapshot) => {
+      const expenseId = childSnapshot.key;
+      const expenseData = childSnapshot.val();
+      if (
+        expenseData.name === expense.name &&
+        expenseData.year === expense.year &&
+        expenseData.month === expense.month
+      ) {
+        existingExpense = { id: expenseId, ...expenseData };
+      } else {
+        return;
+      }
+    });
+
+    if (existingExpense) {
+      existingExpense.value = expense.value;
+      const expenseRef = ref(db, `expenses/${uid}/${existingExpense?.id}`);
+      await update(expenseRef, existingExpense);
+    }
+  } catch (e) {
+    if (e instanceof FirebaseError) {
+      error = e.message;
+    }
+  }
+  return error;
+};
+
+export const removeExpense = async (uid: string, expense: Expense) => {
+  let error: string | null = null;
+  try {
+    const expensesRef = ref(db, `expenses/${uid}/${expense.id}`);
+
+    await remove(expensesRef);
+  } catch (e) {
+    if (e instanceof FirebaseError) {
+      error = e.message;
+    }
+  }
+  return error;
+};
+
+export const getExpenseById = async (uid: string, expenseId: string) => {
+  let error: string | null = null;
+  try {
+    const expenseRef = ref(db, `expenses/${uid}/${expenseId}`);
+    const snapshot = await get(expenseRef);
+
+    if (snapshot.exists()) {
+      const expense = snapshot.val();
+      return { id: expenseId, ...expense };
+    } else {
+      throw new Error(`Expense with ID ${expenseId} not found`);
+    }
+  } catch (e) {
+    if (e instanceof FirebaseError) {
+      error = e.message;
+    }
+    return error;
+  }
 };

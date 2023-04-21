@@ -7,9 +7,8 @@ import {
   useEffect,
   useState,
 } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import { User, onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebase";
-import { type User } from "@/types";
 
 type AuthContextType = {
   user: User | null;
@@ -46,7 +45,7 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
 
   return (
     <AuthContext.Provider value={{ user, loading }}>
-      <>{children}</>
+      {children}
     </AuthContext.Provider>
   );
 };
