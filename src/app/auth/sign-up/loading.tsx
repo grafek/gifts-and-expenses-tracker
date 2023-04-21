@@ -1,5 +1,5 @@
-import { AuthSkeleton } from "@/components/Loaders.server";
+import { FormSkeleton } from "@/components/Loaders.server";
 
 export default function Loading() {
-  return <AuthSkeleton />;
+  return <FormSkeleton />;
 }

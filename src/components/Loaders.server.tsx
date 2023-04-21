@@ -59,7 +59,7 @@ export const ChartSkeleton = () => {
   );
 };
 
-export const AuthSkeleton = () => {
+export const FormSkeleton = () => {
   return (
     <div
       role="status"

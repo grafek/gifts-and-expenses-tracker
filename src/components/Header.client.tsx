@@ -4,20 +4,23 @@ import { useAuthContext } from "@/context/AuthContext";
 import Link from "next/link";
 import Button from "./Button.client";
 import { signOut } from "@/lib/firebase";
+import { usePathname } from "next/navigation";
+
+const NAV_ITEMS = [
+  {
+    text: "Expenses",
+    href: "/expenses",
+  },
+  {
+    text: "Gifts",
+    href: "/gifts",
+  },
+];
 
 function Header() {
   const { user } = useAuthContext();
 
-  const NAV_ITEMS = [
-    {
-      text: "Expenses",
-      href: "/expenses",
-    },
-    {
-      text: "Gifts",
-      href: "/gifts",
-    },
-  ];
+  const path = usePathname();
 
   return (
     <header
@@ -25,12 +28,14 @@ function Header() {
     >
       <nav className="flex items-center justify-between px-6 py-4">
         {/* ADD LOGO */}
-        <Link href="/" />
-        <ul className="flex gap-3 sm:gap-5 md:gap-8">
+        {/* <Link href="/" /> */}
+        <ul className="flex w-full justify-around gap-3 sm:gap-5 md:gap-8">
           {NAV_ITEMS.map((item, i) => (
             <li key={`${item.text} - ${i}`}>
               <Link
-                className={`px-2 transition-colors duration-200 hover:text-gray-200`}
+                className={`px-2 transition-colors duration-200 hover:text-gray-200 ${
+                  path === item.href ? "text-white" : ""
+                }`}
                 href={item.href}
                 shallow
               >
@@ -49,7 +54,7 @@ function Header() {
                 Logout
               </Button>
             ) : (
-              <Link shallow href={"/auth/sign-in"}>
+              <Link shallow className="font-semibold" href={"/auth/sign-in"}>
                 Login
               </Link>
             )}

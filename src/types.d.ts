@@ -19,9 +19,3 @@ export type Expense = {
   year: string;
   userId?: string;
 };
-
-export type User = {
-  displayName: string | null;
-  email: string;
-  providerId: string;
-};

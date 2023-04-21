@@ -21,11 +21,11 @@ const Input = ({
     <span className="font-semibold text-red-600">*</span>
   ) : null;
 
-  const WITHIN = "top-4 sm:top-5 cursor-text px-4";
+  const WITHIN = "top-4 cursor-text px-4";
 
-  const FLOAT = "px-2 top-2 z-20 scale-[0.80]";
+  const FLOAT = "px-2 -top-1 bg-[#0c0c0c] z-20 scale-[0.8]";
 
-  const ERROR_OUTLINE = error?.includes(labelname || "")
+  const ERROR_OUTLINE = error?.includes(labelname ?? "")
     ? "outline-red-600"
     : "outline-gray-700";
 
@@ -49,7 +49,7 @@ const Input = ({
             setLabelClasses(WITHIN);
           }
         }}
-        className={`${className} ${ERROR_OUTLINE} mt-1 w-full rounded-md bg-transparent px-3 pb-1 pt-3 outline outline-1 focus:outline-gray-400 sm:pb-2 sm:pt-4`}
+        className={`${className} ${ERROR_OUTLINE} mt-1 w-full rounded-md bg-transparent px-3 py-2 outline outline-1 focus:outline-gray-400 `}
         {...props}
       />
     </>
