@@ -22,7 +22,7 @@ export default function RootLayout({
           >
             {children}
           </main>
-          <footer className="bg-black p-10">Footer</footer>
+          {/* <footer className="bg-black p-10">Footer</footer> */}
         </AuthContextProvider>
       </body>
     </html>

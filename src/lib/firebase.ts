@@ -24,7 +24,8 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { type Expense } from "@/types";
+import { type Gift, type Expense } from "@/types";
+import { LONG_MONTHS_FORMATTER } from "@/globals";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -156,8 +157,10 @@ export const addExpense = async (uid: string, expense: Expense) => {
       const expenseData = childSnapshot.val();
       if (
         expenseData.name === expense.name &&
-        expenseData.year === expense.year &&
-        expenseData.month === expense.month
+        new Date(expenseData.date).getFullYear ===
+          new Date(expense.date).getFullYear &&
+        LONG_MONTHS_FORMATTER.format(new Date(expenseData.date)) ===
+          LONG_MONTHS_FORMATTER.format(new Date(expenseData.date))
       ) {
         existingExpense = { id: expenseId, ...expenseData };
       }
@@ -190,19 +193,15 @@ export const updateExpense = async (uid: string, expense: Expense) => {
     snapshot.forEach((childSnapshot) => {
       const expenseId = childSnapshot.key;
       const expenseData = childSnapshot.val();
-      if (
-        expenseData.name === expense.name &&
-        expenseData.year === expense.year &&
-        expenseData.month === expense.month
-      ) {
+      if (expenseData.date === expense.date) {
         existingExpense = { id: expenseId, ...expenseData };
       } else {
-        return;
+        throw new Error(`Expense with ID ${expense.id} not found`);
       }
     });
 
     if (existingExpense) {
-      existingExpense.value = expense.value;
+      existingExpense = expense;
       const expenseRef = ref(db, `expenses/${uid}/${existingExpense?.id}`);
       await update(expenseRef, existingExpense);
     }
@@ -239,6 +238,105 @@ export const getExpenseById = async (uid: string, expenseId: string) => {
       return { id: expenseId, ...expense };
     } else {
       throw new Error(`Expense with ID ${expenseId} not found`);
+    }
+  } catch (e) {
+    if (e instanceof FirebaseError) {
+      error = e.message;
+    }
+    return error;
+  }
+};
+
+export const getGifts = async (uid: string) => {
+  return new Promise<Gift[]>((resolve, reject) => {
+    const giftsRef = ref(db, `gifts/${uid}`);
+
+    onValue(
+      giftsRef,
+      (snapshot) => {
+        let gifts: Gift[] = [];
+        snapshot.forEach((childSnapshot) => {
+          const gift = childSnapshot.val();
+          gifts = [...gifts, gift];
+        });
+        resolve(gifts);
+      },
+      (error) => {
+        reject(error);
+      }
+    );
+  });
+};
+
+export const addGift = async (uid: string, gift: Gift) => {
+  let error: string | null = null;
+  try {
+    const giftsRef = push(ref(db, `gifts/${uid}`));
+    const id = giftsRef.key;
+    await set(giftsRef, { ...gift, id });
+  } catch (e) {
+    if (e instanceof FirebaseError) {
+      error = e.message;
+    }
+  }
+  return error;
+};
+
+export const removeGift = async (uid: string, gift: Gift) => {
+  let error: string | null = null;
+  try {
+    const giftsRef = ref(db, `gifts/${uid}/${gift.id}`);
+
+    await remove(giftsRef);
+  } catch (e) {
+    if (e instanceof FirebaseError) {
+      error = e.message;
+    }
+  }
+  return error;
+};
+
+export const updateGift = async (uid: string, gift: Gift) => {
+  let error: string | null = null;
+  try {
+    const giftsRef = ref(db, `gifts/${uid}`);
+    const snapshot = await get(giftsRef);
+    let existingGift: Partial<Gift> = {};
+
+    snapshot.forEach((childSnapshot) => {
+      const expenseId = childSnapshot.key;
+      const giftData = childSnapshot.val();
+      if (giftData.name === gift.name && giftData.date === gift.date) {
+        existingGift = { id: expenseId, ...giftData };
+      } else {
+        throw new Error(`Gift with ID ${gift.id} not found`);
+      }
+    });
+
+    if (existingGift) {
+      existingGift = gift;
+      const giftsRef = ref(db, `gifts/${uid}/${existingGift?.id}`);
+      await update(giftsRef, existingGift);
+    }
+  } catch (e) {
+    if (e instanceof FirebaseError) {
+      error = e.message;
+    }
+  }
+  return error;
+};
+
+export const getGiftById = async (uid: string, giftId: string) => {
+  let error: string | null = null;
+  try {
+    const giftsRef = ref(db, `gifts/${uid}/${giftId}`);
+    const snapshot = await get(giftsRef);
+
+    if (snapshot.exists()) {
+      const expense = snapshot.val();
+      return { id: giftId, ...expense };
+    } else {
+      throw new Error(`Gift with ID ${giftId} not found`);
     }
   } catch (e) {
     if (e instanceof FirebaseError) {

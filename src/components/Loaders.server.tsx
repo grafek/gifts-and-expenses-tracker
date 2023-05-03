@@ -15,7 +15,7 @@ export const Spinner = () => {
 
 export const LoadingPage = () => {
   return (
-    <div className="grid center place-items-center">
+    <div className="center">
       <div
         role="status"
         className="relative inline-block h-12 w-12 [&>div]:absolute [&>div]:box-border [&>div]:block [&>div]:h-12 [&>div]:w-12 [&>div]:rounded-full [&>div]:border-[6px] [&>div]:border-transparent [&>div]:border-t-blue-600"
@@ -76,6 +76,35 @@ export const FormSkeleton = () => {
         <div className="h-[1px] flex-1 bg-gray-800"></div>
       </div>
       <div className="mx-auto h-6 w-1/2 rounded-full bg-gray-700" />
+      <span className="sr-only">Loading...</span>
+    </div>
+  );
+};
+
+export const TableSkeleton = () => {
+  return (
+    <div
+      role="status"
+      className="flex h-[40vh] w-full animate-pulse flex-col justify-between rounded border border-gray-700 shadow"
+    >
+      <div className="mx-auto w-full bg-[#444444] py-4" />
+      {Array(6)
+        .fill("")
+        .map((_, index) => (
+          <div
+            key={index}
+            className="flex gap-8 px-4 py-6 odd:bg-[#333333] even:bg-[#222222]"
+          >
+            {Array(6)
+              .fill("")
+              .map((_, index) => (
+                <div
+                  key={index}
+                  className="h-4 w-1/5 rounded-full bg-gray-600"
+                />
+              ))}
+          </div>
+        ))}
       <span className="sr-only">Loading...</span>
     </div>
   );
