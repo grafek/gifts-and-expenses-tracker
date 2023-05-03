@@ -42,9 +42,9 @@ select:-webkit-autofill:focus {
 }
 
 .btn-transparent {
-  @apply bg-transparent px-3 py-1 text-lg outline outline-1 outline-gray-700 hover:bg-gray-300 hover:text-black md:px-4 md:py-2;
+  @apply bg-transparent px-2 py-1 outline outline-1 outline-gray-700 hover:bg-gray-300 hover:text-black md:px-3 md:py-2;
 }
 
 .btn-primary {
-  @apply bg-gray-300 px-3 py-1 text-lg text-black outline outline-1 outline-gray-700 transition-colors duration-300 hover:bg-transparent hover:text-inherit md:px-4 md:py-2;
+  @apply bg-gray-300 px-2 py-1 text-black outline outline-1 outline-gray-700 transition-colors duration-300 hover:bg-transparent hover:text-inherit md:px-3 md:py-2;
 }

@@ -2,29 +2,28 @@ import withAuth from "@/hoc/withAuth";
 import { Spinner } from "./Loaders.server";
 import Button from "./Button.client";
 import Input from "./Input.client";
-import { type Expense } from "@/types";
+import { type Gift } from "@/types";
 import { useCallback, useState } from "react";
+import { LONG_DATETIME_FORMATTER } from "@/globals";
 
-type ExpenseFormProps = {
-  submitHandler: (expense: Expense) => Promise<void>;
-  defaultValues?: Expense;
+type GiftFormProps = {
+  submitHandler: (gift: Gift) => Promise<void>;
+  defaultValues?: Gift;
 };
 
-const INITIAL_EXPENSE = {
+const INITIAL_GIFT: Gift = {
   name: "",
-  value: "" as unknown as number,
+  giver: "",
+  receiver: "",
   date: new Date().toISOString().slice(0, 10),
 };
+const MAX_GIFTNAME_LENGTH = 40;
 
-const MAX_NAME_LENGTH = 15;
-
-const ExpenseForm: React.FC<ExpenseFormProps> = ({
+const GiftForm: React.FC<GiftFormProps> = ({
   submitHandler,
   defaultValues,
 }) => {
-  const [expense, setExpense] = useState<Expense>(
-    defaultValues ?? INITIAL_EXPENSE
-  );
+  const [gift, setGift] = useState<Gift>(defaultValues ?? INITIAL_GIFT);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -32,26 +31,32 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
   const handleSubmit = useCallback(
     async (event: any) => {
       event.preventDefault();
-
       setError(null);
 
-      if (expense.name.trim().length < 1) {
+      const giftDate = LONG_DATETIME_FORMATTER.format(new Date(gift.date));
+
+      if (gift.name.trim().length < 1) {
         setError("Name cannot be empty!");
         return;
-      } else if (expense.name.trim().length > MAX_NAME_LENGTH) {
-        setError(`Name cannot be longer than ${MAX_NAME_LENGTH} characters!`);
+      } else if (gift.name.trim().length > MAX_GIFTNAME_LENGTH) {
+        setError(
+          `Name cannot be longer than ${MAX_GIFTNAME_LENGTH} characters!`
+        );
         return;
-      } else if (Number(expense.value) < 1) {
-        setError("Value cannot be less than a 0!");
+      } else if (gift.giver.trim().length < 1) {
+        setError("Giver cannot be empty!");
+        return;
+      } else if (gift.receiver.trim().length < 1) {
+        setError("Receiver cannot be empty!");
         return;
       }
       setLoading(true);
 
-      await submitHandler(expense);
+      await submitHandler({ ...gift, date: giftDate });
 
-      setExpense(INITIAL_EXPENSE);
+      setGift(INITIAL_GIFT);
     },
-    [expense, submitHandler]
+    [gift, submitHandler]
   );
 
   return (
@@ -63,35 +68,35 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
         <Input
           required
           type="text"
-          name="Expense Name"
-          value={expense.name}
+          name="name"
+          value={gift.name}
           error={error}
-          labelname="Name"
+          labelname="Gift"
           onChange={(e) => {
-            setExpense({ ...expense, name: e.target.value });
+            setGift({ ...gift, name: e.target.value });
             setError(null);
           }}
         />
         <span
           className={`absolute bottom-1 right-2 text-xs ${
-            expense.name.trim().length > MAX_NAME_LENGTH
+            gift.name.trim().length > MAX_GIFTNAME_LENGTH
               ? "text-red-600"
               : "text-[#888]"
           }`}
         >
-          {expense.name.trim().length}/{MAX_NAME_LENGTH}
+          {gift.name.trim().length}/{MAX_GIFTNAME_LENGTH}
         </span>
       </div>
       <div className="relative">
         <Input
           required
-          type="number"
-          name="Expense Value"
-          labelname="Value"
+          type="text"
+          name="giver"
+          labelname="Giver"
           error={error}
-          value={expense.value}
+          value={gift.giver}
           onChange={(e) => {
-            setExpense({ ...expense, value: Number(e.target.value) });
+            setGift({ ...gift, giver: e.target.value });
             setError(null);
           }}
         />
@@ -99,21 +104,36 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
       <div className="relative">
         <Input
           required
-          onClick={(e) => e.currentTarget.showPicker()}
+          type="text"
+          name="receiver"
+          labelname="Receiver"
+          error={error}
+          value={gift.receiver}
+          onChange={(e) => {
+            setGift({ ...gift, receiver: e.target.value });
+            setError(null);
+          }}
+        />
+      </div>
+      <div className="relative">
+        <Input
+          required
           type="date"
-          name="expense date"
+          name="date"
           labelname="Date"
           error={error}
-          value={expense.date.toString()}
+          onClick={(e) => e.currentTarget.showPicker()}
+          value={new Date(gift.date).toISOString().slice(0, 10)}
           onChange={(e) => {
-            setExpense({
-              ...expense,
+            setGift({
+              ...gift,
               date: new Date(e.target.value).toISOString().slice(0, 10),
             });
             setError(null);
           }}
         />
       </div>
+
       <Button
         type="submit"
         title="submit"
@@ -132,4 +152,4 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
   );
 };
 
-export default withAuth(ExpenseForm);
+export default withAuth(GiftForm);

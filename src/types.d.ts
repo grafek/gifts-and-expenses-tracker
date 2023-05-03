@@ -2,20 +2,14 @@ export type Expense = {
   id?: string;
   name: string;
   value: number;
-  month:
-    | "January"
-    | "February"
-    | "March"
-    | "April"
-    | "May"
-    | "June"
-    | "July"
-    | "August"
-    | "September"
-    | "October"
-    | "November"
-    | "December"
-    | string;
-  year: string;
+  date: Date | string;
   userId?: string;
+};
+
+export type Gift = {
+  id?: string;
+  name: string;
+  receiver: string;
+  giver: string;
+  date: Date | string;
 };
