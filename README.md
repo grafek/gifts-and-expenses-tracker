@@ -6,14 +6,11 @@ A simple app to track your expenses and gifts from your friends
 
 ## ✔️ TODO
 
-- [ ] gifts page (crud)
-- [x] delete and edit an expense
-- [ ] some animations
-- [ ] maybe add some more oauth providers (only google as of now)
+- [ ] animations, confirm modal on deleting item
 
 
 ## 🔥 Features
-- [x] CRUD expenses on the chart or list for editing/removing
+- [x] CRUD expenses/gifts on the chart or list for editing/removing
 - [x] basic form validation & user feedback
 - [x] auth and protected routes
 
