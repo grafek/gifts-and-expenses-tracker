@@ -1,30 +1,28 @@
 export const MONTHS = [
-  // "All Months",
-  "January",
-  "February",
-  "March",
-  "April",
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
   "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
 ];
 
-export const YEARS = [
-  // "All Years",
-  "2023",
-  "2024",
-  "2025",
-  "2026",
-];
+export const YEARS = ["2023", "2024", "2025", "2026"];
 
-export const LONG_DATETIME_FORMATTER = new Intl.DateTimeFormat("en-US", {
+export const CURRENT_YEAR = new Date().getFullYear().toString();
+export const CURRENT_MONTH = new Date().toLocaleString("default", {
+  month: "short",
+});
+
+export const DATETIME_FORMATTER = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
-  month: "long",
+  month: "short",
   day: "numeric",
 });
 

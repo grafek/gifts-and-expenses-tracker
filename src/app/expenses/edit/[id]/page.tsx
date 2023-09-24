@@ -11,7 +11,7 @@ import { useCallback, useEffect, useState } from "react";
 export default function Page({ params }: { params: Params }) {
   const [expense, setExpense] = useState<Expense | null>(null);
 
-const router = useRouter()
+  const router = useRouter();
 
   const { loading, user } = useAuthContext();
 
@@ -24,11 +24,14 @@ const router = useRouter()
     })();
   }, [loading, params.id, user?.uid]);
 
-  const handleUpdateExpense = useCallback(async (expense: Expense) => {
-    await updateExpense(user?.uid as string, expense);
+  const handleUpdateExpense = useCallback(
+    async (expense: Expense) => {
+      await updateExpense(user?.uid as string, expense);
 
-    router.push('/expenses')
-  }, [router, user?.uid]);
+      router.push("/expenses");
+    },
+    [router, user?.uid],
+  );
 
   if (loading || !expense) {
     return (
@@ -40,8 +43,13 @@ const router = useRouter()
 
   return (
     <>
-      <h1 className="text-lg font-semibold">Editing expense</h1>
-      <ExpenseForm defaultValues={expense} submitHandler={handleUpdateExpense} />
+      <h1 className="text-lg font-semibold">
+        Editing <span className="italic">{expense.name}</span> expense
+      </h1>
+      <ExpenseForm
+        defaultValues={expense}
+        submitHandler={handleUpdateExpense}
+      />
     </>
   );
 }

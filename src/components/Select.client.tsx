@@ -19,10 +19,8 @@ const Select = ({
   ) : null;
 
   return (
-    <>
-      <label htmlFor={name}>
-        {labelname} {requiredAsterisk}
-      </label>
+    <label htmlFor={name}>
+      {labelname} {requiredAsterisk}
       <select
         id={name}
         className={`${className} w-full rounded-md bg-transparent px-3 py-1 outline outline-1 outline-gray-700 focus:outline-gray-400 md:py-2`}
@@ -38,7 +36,7 @@ const Select = ({
           </option>
         ))}
       </select>
-    </>
+    </label>
   );
 };
 export default Select;

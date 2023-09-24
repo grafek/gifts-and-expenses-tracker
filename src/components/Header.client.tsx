@@ -26,10 +26,10 @@ function Header() {
     <header
       className={`fixed z-30 w-full border-b-[1px] border-[#26252e] bg-black`}
     >
-      <nav className="flex items-center justify-between px-6 py-4">
+      <nav className="mx-auto max-w-6xl px-6 py-4">
         {/* ADD LOGO */}
         {/* <Link href="/" /> */}
-        <ul className="flex w-full justify-around gap-3 sm:gap-5 md:gap-8">
+        <ul className="flex w-full justify-between gap-3 sm:gap-5 md:gap-8">
           {NAV_ITEMS.map((item, i) => (
             <li key={`${item.text} - ${i}`}>
               <Link
