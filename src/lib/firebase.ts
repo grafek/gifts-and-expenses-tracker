@@ -53,7 +53,7 @@ export async function signUp(name: string, email: string, password: string) {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
     if (auth.currentUser) {
       await updateProfile(auth.currentUser, {
@@ -140,7 +140,7 @@ export const getExpenses = async (uid: string) => {
       },
       (error) => {
         reject(error);
-      }
+      },
     );
   });
 };
@@ -186,14 +186,15 @@ export const addExpense = async (uid: string, expense: Expense) => {
 export const updateExpense = async (uid: string, expense: Expense) => {
   let error: string | null = null;
   try {
+    if (!expense) return;
     const expensesRef = ref(db, `expenses/${uid}`);
     const snapshot = await get(expensesRef);
     let existingExpense: Partial<Expense> = {};
 
     snapshot.forEach((childSnapshot) => {
-      const expenseId = childSnapshot.key;
+      const expenseId = childSnapshot.child(expense.id!).key;
       const expenseData = childSnapshot.val();
-      if (expenseData.date === expense.date) {
+      if (expenseId === expense.id) {
         existingExpense = { id: expenseId, ...expenseData };
       } else {
         throw new Error(`Expense with ID ${expense.id} not found`);
@@ -263,7 +264,7 @@ export const getGifts = async (uid: string) => {
       },
       (error) => {
         reject(error);
-      }
+      },
     );
   });
 };
@@ -299,15 +300,16 @@ export const removeGift = async (uid: string, gift: Gift) => {
 export const updateGift = async (uid: string, gift: Gift) => {
   let error: string | null = null;
   try {
+    if (!gift) return;
     const giftsRef = ref(db, `gifts/${uid}`);
     const snapshot = await get(giftsRef);
     let existingGift: Partial<Gift> = {};
 
     snapshot.forEach((childSnapshot) => {
-      const expenseId = childSnapshot.key;
+      const giftId = childSnapshot.child(gift.id!).key;
       const giftData = childSnapshot.val();
-      if (giftData.name === gift.name && giftData.date === gift.date) {
-        existingGift = { id: expenseId, ...giftData };
+      if (giftId === gift.id) {
+        existingGift = { id: giftId, ...giftData };
       } else {
         throw new Error(`Gift with ID ${gift.id} not found`);
       }

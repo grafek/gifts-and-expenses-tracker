@@ -18,11 +18,10 @@ export default function RootLayout({
         <AuthContextProvider>
           <Header />
           <main
-            className={`container mx-auto min-h-[calc(100vh-104px)] px-4 pb-8 pt-20`}
+            className={`container mx-auto min-h-[calc(100vh-104px)] max-w-6xl px-4 pb-8 pt-20`}
           >
             {children}
           </main>
-          {/* <footer className="bg-black p-10">Footer</footer> */}
         </AuthContextProvider>
       </body>
     </html>

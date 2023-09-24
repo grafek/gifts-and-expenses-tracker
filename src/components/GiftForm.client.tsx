@@ -4,7 +4,7 @@ import Button from "./Button.client";
 import Input from "./Input.client";
 import { type Gift } from "@/types";
 import { useCallback, useState } from "react";
-import { LONG_DATETIME_FORMATTER } from "@/globals";
+import { DATETIME_FORMATTER } from "@/globals";
 
 type GiftFormProps = {
   submitHandler: (gift: Gift) => Promise<void>;
@@ -33,14 +33,14 @@ const GiftForm: React.FC<GiftFormProps> = ({
       event.preventDefault();
       setError(null);
 
-      const giftDate = LONG_DATETIME_FORMATTER.format(new Date(gift.date));
+      const giftDate = DATETIME_FORMATTER.format(new Date(gift.date));
 
       if (gift.name.trim().length < 1) {
         setError("Name cannot be empty!");
         return;
       } else if (gift.name.trim().length > MAX_GIFTNAME_LENGTH) {
         setError(
-          `Name cannot be longer than ${MAX_GIFTNAME_LENGTH} characters!`
+          `Name cannot be longer than ${MAX_GIFTNAME_LENGTH} characters!`,
         );
         return;
       } else if (gift.giver.trim().length < 1) {
@@ -56,7 +56,7 @@ const GiftForm: React.FC<GiftFormProps> = ({
 
       setGift(INITIAL_GIFT);
     },
-    [gift, submitHandler]
+    [gift, submitHandler],
   );
 
   return (

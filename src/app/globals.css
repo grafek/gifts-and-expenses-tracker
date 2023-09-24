@@ -42,7 +42,7 @@ select:-webkit-autofill:focus {
 }
 
 .btn-transparent {
-  @apply bg-transparent px-2 py-1 outline outline-1 outline-gray-700 hover:bg-gray-300 hover:text-black md:px-3 md:py-2;
+  @apply bg-transparent px-2 py-1 outline outline-1 outline-gray-800 hover:bg-black/90 md:px-3 md:py-2;
 }
 
 .btn-primary {

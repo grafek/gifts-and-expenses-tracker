@@ -31,16 +31,16 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user as User);
+        localStorage.setItem("firebaseAuth", "1");
       } else {
         setUser(null);
+        localStorage.removeItem("firebaseAuth");
       }
       setLoading(false);
     });
-
-    return () => unsubscribe();
   }, []);
 
   return (
